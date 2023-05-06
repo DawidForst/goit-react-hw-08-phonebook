@@ -13,6 +13,7 @@ import { doc, onSnapshot, updateDoc, arrayRemove } from "@firebase/firestore";
 
 export default function ContactList({ filterText }) {
   const [contacts, setContacts] = useState([]);
+  const [updated, setUpdated] = useState(false);
 
   useEffect(() => {
     const uid = auth.currentUser.uid;
@@ -26,13 +27,14 @@ export default function ContactList({ filterText }) {
         } else {
           setContacts([]);
         }
+        setUpdated(false);
       }
     });
 
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [updated]);
 
   const filteredContacts = useMemo(() => {
     if (!filterText) {
@@ -54,10 +56,15 @@ export default function ContactList({ filterText }) {
       });
 
       setContacts((prevContacts) => prevContacts.filter((_, i) => i !== index));
+      setUpdated(true);
     } catch (error) {
       console.error("Error deleting contact:", error);
     }
   };
+
+  if (contacts.length === 0) {
+    return <p>No contacts found</p>;
+  }
 
   return (
     <List>
