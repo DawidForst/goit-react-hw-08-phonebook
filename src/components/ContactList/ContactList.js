@@ -5,6 +5,8 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
+  Box,
+  Typography,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 
@@ -63,25 +65,45 @@ export default function ContactList({ filterText }) {
   };
 
   if (contacts.length === 0) {
-    return <p>No contacts found</p>;
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        height="100%"
+        justifyContent="center"
+      >
+        <Typography variant="h5" component="h2" align="center" gutterBottom>
+          Contacts
+        </Typography>
+        <Typography variant="h6" component="p">
+          No contacts found
+        </Typography>
+      </Box>
+    );
   }
 
   return (
-    <List>
-      {filteredContacts.map((contact, index) => (
-        <ListItem key={index}>
-          <ListItemText primary={contact.name} secondary={contact.phone} />
-          <ListItemSecondaryAction>
-            <IconButton
-              edge="end"
-              aria-label="delete"
-              onClick={() => handleDelete(index)}
-            >
-              <Delete />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-      ))}
-    </List>
+    <Box display="flex" flexDirection="column" alignItems="center">
+      <Typography variant="h5" component="h2" align="center" gutterBottom>
+        Contacts
+      </Typography>
+      <List sx={{ width: "100%", maxWidth: 360 }}>
+        {filteredContacts.map((contact, index) => (
+          <ListItem key={index}>
+            <ListItemText primary={contact.name} secondary={contact.phone} />
+            <ListItemSecondaryAction>
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => handleDelete(index)}
+              >
+                <Delete />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   );
 }
